@@ -9,7 +9,9 @@ public class App
 
         System.out.println( "Main method" );
         Connection connection;
-        Statement statement;
+        //Statement statement;
+        PreparedStatement preparedStatement;
+
         //открытие соединения
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -18,7 +20,10 @@ public class App
                     "root",
                     "root"
                     );
-            statement = connection.createStatement();
+            // statement = connection.createStatement();
+
+
+
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -41,26 +46,51 @@ public class App
             //обновление записи
             //int result = statement.executeUpdate("update table1 set Data='NewData1' where Id=1");
             //System.out.println(result);
+/*
 
             //выборка данных
             ResultSet resultSet = statement.executeQuery("select * from table1 ");
             //обработка результата выборки
-            while (resultSet.next()) {
+           while (resultSet.next()) {
                 int id = resultSet.getInt("Id");
                 String data = resultSet.getString("Data");
                 System.out.printf("id: %d, data: %s. \n", id, data);
+           }
+*/
 
-            }
+/*
 
-            /*
             //пакетная обработка
             statement.addBatch("insert into table1(Id, Data) VALUES (2, 'batchData2' )");
             statement.addBatch("insert into table1(Id, Data) VALUES (3, 'batchData3' )");
             statement.addBatch("insert into table1(Id, Data) VALUES (4, 'batchData4' )");
             statement.addBatch("insert into table1(Id, Data) VALUES (5, 'batchData5' )");
-            statement.executeBatch();*/
+            statement.executeBatch();
             //очистка Batch
             //statement.clearBatch();
+*/
+            //подготовленный запрос
+ /*
+            //добавление строки
+            preparedStatement = connection.prepareStatement("insert into table1 values(?,?)");
+            preparedStatement.setInt(1,6);
+            preparedStatement.setString(2,"data6");
+            preparedStatement.execute();
+*/
+            //выборка данных
+            preparedStatement = connection.prepareStatement("select * from table1");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+               int id = resultSet.getInt("Id");
+               String data = resultSet.getString("Data");
+               System.out.printf("id: %d, data: %s. \n", id, data);
+           }
+/*
+            //удаление данных
+            preparedStatement = connection.prepareStatement("delete from table1 where Id=?");
+            preparedStatement.setInt(1, 6);
+            preparedStatement.executeUpdate();
+*/
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
