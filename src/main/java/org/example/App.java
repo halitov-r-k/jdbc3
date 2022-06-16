@@ -1,9 +1,6 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class App 
 {
@@ -35,10 +32,36 @@ public class App
 
         //работа с db
         try {
+            //создание таблицы
+            //statement.executeUpdate("create table table1 (Id int, Data varchar(20))");
+
             //вставка записи
-            // statement.execute("INSERT INTO table1(Id, Data) VALUES(1, 'date1');");
+            //statement.execute("INSERT INTO table1(Id, Data) VALUES(1, 'date1');");
+
             //обновление записи
-            int result = statement.executeUpdate("update table1 set Data='NewData1' where Id=1");
+            //int result = statement.executeUpdate("update table1 set Data='NewData1' where Id=1");
+            //System.out.println(result);
+
+            //выборка данных
+            ResultSet resultSet = statement.executeQuery("select * from table1 ");
+            //обработка результата выборки
+            while (resultSet.next()) {
+                int id = resultSet.getInt("Id");
+                String data = resultSet.getString("Data");
+                System.out.printf("id: %d, data: %s. \n", id, data);
+
+            }
+
+            /*
+            //пакетная обработка
+            statement.addBatch("insert into table1(Id, Data) VALUES (2, 'batchData2' )");
+            statement.addBatch("insert into table1(Id, Data) VALUES (3, 'batchData3' )");
+            statement.addBatch("insert into table1(Id, Data) VALUES (4, 'batchData4' )");
+            statement.addBatch("insert into table1(Id, Data) VALUES (5, 'batchData5' )");
+            statement.executeBatch();*/
+            //очистка Batch
+            //statement.clearBatch();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
